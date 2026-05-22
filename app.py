@@ -95,10 +95,6 @@ with col_g2:
 # =========================
 # Graphe Zoom Rendement (Optimisé)
 # =========================
-# =========================
-# =========================
-# Graphe Zoom Rendement (Format compact)
-# =========================
 
 # On utilise un ratio [1, 2] pour que le texte ait de la place sans étirer le graphique
 col_gauche, col_droite = st.columns([1, 2])
@@ -116,34 +112,35 @@ with col_gauche:
 
 with col_droite:
     st.write("#### Zoom sur le rendement")
-    # Taille réduite : figsize=(6, 3.5)
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
-    # Tout le bloc suivant doit être indenté sous 'with col_droite:'
     for c in sorted(list(set([0.7, cos_phi, 1.0]))):
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
-        # On définit une nuance de bleu différente pour chaque courbe
+        # Attribution des couleurs selon la valeur
         if c == cos_phi:
-            # La courbe principale en Bleu foncé (trait gras)
-            ax_zoom.plot(beta, eta, color='navy', linewidth=3, label=f'cos(φ)={c:.2f}')
-        else:
-            # Les références en Bleu clair
-            ax_zoom.plot(beta, eta, color='skyblue', linestyle='--', linewidth=1.5, label=f'cos(φ)={c:.2f}')
+            couleur = 'navy'   # Votre curseur en Bleu foncé
+            epaisseur = 3
+            style = '-'
+        elif c == 0.7:
+            couleur = 'red'    # 0.7 en Rouge
+            epaisseur = 1.5
+            style = '--'
+        else: # c == 1.0
+            couleur = 'green'  # 1.0 en Vert
+            epaisseur = 1.5
+            style = '--'
+            
+        ax_zoom.plot(beta, eta, color=couleur, linestyle=style, linewidth=epaisseur, label=f'cos(φ)={c:.2f}')
 
     ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β opt')
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
-    
-    # Zoom global
     ax_zoom.set_ylim(0, 105)
-    
     ax_zoom.grid(True)
-    # Légende plus petite pour ne pas prendre de place
     ax_zoom.legend(fontsize='small')
 
-    # Ajustement serré pour éviter les marges vides
     fig_zoom.tight_layout()
     st.pyplot(fig_zoom)
 # ==========================================
