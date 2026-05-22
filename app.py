@@ -95,47 +95,51 @@ with col_g2:
 # =========================
 # Graphe Zoom Rendement (Optimisé)
 # =========================
+# =========================
+# Graphe Zoom Rendement (Format compact)
+# =========================
 
-# On définit les colonnes : 1/3 pour le texte à gauche, 2/3 pour le graphique à droite
+# On utilise un ratio [1, 2] pour que le texte ait de la place sans étirer le graphique
 col_gauche, col_droite = st.columns([1, 2])
 
 with col_gauche:
     st.subheader("Analyse de l'optimisation")
     st.write(f"""
-    Le point de fonctionnement optimal est atteint pour **β = {beta_opt:.3f}**. 
-    À ce point précis :
-    * Les pertes fer (fixes) sont égales aux pertes Joule (variables).
-    * Un **cos(φ) élevé** déplace la courbe de rendement vers le haut.
-    * Le transformateur est **optimisé** lorsqu'il fonctionne au voisinage de son β optimal.
+    Le point optimal est atteint pour **β = {beta_opt:.3f}**. 
+    À ce point :
+    * Pertes fer = pertes Joule.
+    * Un **cos(φ) élevé** maximise le rendement.
+    * Le fonctionnement idéal se situe au voisinage de β_opt.
     """)
-    st.info("💡 Chargez le transformateur près de β_opt pour minimiser les pertes énergétiques.")
+    st.info("💡 Travaillez proche de β_opt pour minimiser les pertes.")
 
 with col_droite:
-    st.write("#### Zoom sur le rendement maximal")
-    fig_zoom, ax_zoom = plt.subplots(figsize=(8, 5))
+    st.write("#### Zoom sur le rendement")
+    # Taille réduite : figsize=(6, 3.5)
+    fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
-    # Boucle pour tracer les courbes de rendement
-    # On utilise [0.7, cos_phi, 1.0] pour comparer votre choix avec des références
     for c in sorted(list(set([0.7, cos_phi, 1.0]))):
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
-        # Style : trait gras pour le cos(φ) choisi, pointillés pour les autres
         style = '-' if c == cos_phi else '--'
-        width = 3 if c == cos_phi else 1.5
+        width = 2.5 if c == cos_phi else 1.2
         
-        ax_zoom.plot(beta, eta, style, linewidth=width, label=f'cos(φ) = {c:.2f}')
+        ax_zoom.plot(beta, eta, style, linewidth=width, label=f'cos(φ)={c:.2f}')
 
-    ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β optimal')
+    ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β opt')
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
     
-    # Zoom global (0 à 105% pour tout voir)
+    # Zoom global
     ax_zoom.set_ylim(0, 105)
     
     ax_zoom.grid(True)
-    ax_zoom.legend()
+    # Légende plus petite pour ne pas prendre de place
+    ax_zoom.legend(fontsize='small')
 
+    # Ajustement serré pour éviter les marges vides
+    fig_zoom.tight_layout()
     st.pyplot(fig_zoom)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
