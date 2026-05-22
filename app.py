@@ -19,6 +19,13 @@ with onglets[0]:
     P0 = col_param2.number_input("Pertes Fer P0 (W)", value=500, step=50)
     Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
     cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
+    # Formulaire sur une ligne
+    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
+    Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=630000, step=10000)
+    P0 = col_param2.number_input("Pertes Fer P0 (W)", value=1100, step=100)
+    Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=6500, step=100)
+    cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
+
     # Moteur de calcul théorique
     beta = np.arange(0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0
