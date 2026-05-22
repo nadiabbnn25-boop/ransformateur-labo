@@ -92,7 +92,7 @@ with col_g2:
     ax2.grid(True)
 
     st.pyplot(fig2)
-  # =========================
+ # =========================
 # Graphe Zoom Rendement
 # =========================
 st.write("#### Zoom sur le rendement maximal")
@@ -122,13 +122,12 @@ ax_zoom.axvline(
 ax_zoom.set_xlabel('Taux de charge (β)')
 ax_zoom.set_ylabel('Rendement (%)')
 
-# Zoom vertical
-ax_zoom.set_ylim(94, 100)
+# Zoom vertical depuis 60 %
+ax_zoom.set_ylim(60, 100)
 
 ax_zoom.grid(True)
 ax_zoom.legend()
 
-# Correction de l'alignement
 fig_zoom.tight_layout()
 
 st.pyplot(fig_zoom)
