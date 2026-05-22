@@ -88,38 +88,7 @@ with onglets[0]:
         plt.close(fig1)
 
     # ── Graphique 2 : Rendement global + zoom ───────────────────
-    with col_g2:
-        st.write("#### Rendement pour différents cos(φ)")
-        fig2, (ax2, ax_zoom) = plt.subplots(
-            2, 1, figsize=(6, 7),
-            gridspec_kw={"hspace": 0.45}
-        )
-
-        for c in cos_set:
-            P_utile = Sn * beta * c
-            eta     = 100 * P_utile / (P_utile + P0 + Pcc * beta ** 2 + 1e-9)
-            kw      = style_courbe(c, cos_phi)
-            label   = f"cos(φ) = {c:.2f}"
-            ax2.plot(beta, eta, label=label, **kw)
-            ax_zoom.plot(beta, eta, label=label, **kw)
-
-        for ax, ylim, titre in [
-            (ax2,    (0,  105), "Vue globale"),
-            (ax_zoom,(60, 105), "Zoom (60 – 105 %)"),
-        ]:
-            ax.axvline(x=beta_opt, color="k", linestyle="--",
-                       linewidth=0.9, label="β optimal")
-            ax.set_xlabel("Taux de charge (β)")
-            ax.set_ylabel("Rendement (%)")
-            ax.set_ylim(*ylim)
-            ax.set_title(titre)
-            ax.legend(fontsize="x-small")
-            ax.grid(True, alpha=0.6)
-
-        fig2.tight_layout()
-        st.pyplot(fig2)
-        plt.close(fig2)
-
+    st.write(f"Valeur actuelle de cos_phi : {cos_phi}")
     # ══════════════════════════════════════════════════════════════
     # LIGNE 2 : Analyse de l'optimisation  |  (espace libre)
     # ══════════════════════════════════════════════════════════════
