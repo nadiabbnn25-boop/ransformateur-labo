@@ -13,9 +13,19 @@ onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Exp
 # ==========================================
 # ONGLET 1 : MODE INDUSTRIEL
 # ==========================================
-# ==========================================
-# ONGLET 1 : MODE INDUSTRIEL
-# ==========================================
+
+with onglets[0]:
+    st.header("Simulation d'un Transformateur de Puissance")
+    
+    # 1. On affiche l'image d'abord
+    st.image("schema_transfo.png", caption="Principe de fonctionnement du transformateur monophasé", use_container_width=True)
+    
+    # 2. On affiche la plaque signalétique juste en dessous
+    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
+    
+    # 3. Ensuite, les autres paramètres
+    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
+    # ... (le reste de votre code)
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
