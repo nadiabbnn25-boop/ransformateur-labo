@@ -17,7 +17,7 @@ with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
     with col_c2:
-        st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement", width=500)
+        st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement", width=550)
     
     st.info("**Plaque signalétique :** 100 kVA | 20 kV / 400 V | 50 Hz")
     
