@@ -92,6 +92,46 @@ with col_g2:
     ax2.grid(True)
 
     st.pyplot(fig2)
+        # =========================
+    # Graphe Zoom Rendement
+    # =========================
+    st.write("#### Zoom sur le rendement maximal")
+
+    fig_zoom, ax_zoom = plt.subplots()
+
+    for cosv, c in zip(cos_values, couleurs):
+
+        P2 = beta * Sn * cosv
+        eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+
+        ax_zoom.plot(
+            beta,
+            eta,
+            linewidth=2,
+            color=c,
+            label=f'cos(φ) = {cosv}'
+        )
+
+    ax_zoom.axvline(
+        x=beta_opt,
+        color='k',
+        linestyle='--',
+        label='β optimal'
+    )
+
+    ax_zoom.set_xlabel('Taux de charge (β)')
+    ax_zoom.set_ylabel('Rendement (%)')
+
+    # Zoom vertical
+    ax_zoom.set_ylim(94, 100)
+
+    # Zoom horizontal
+    ax_zoom.set_xlim(0.4, 1.4)
+
+    ax_zoom.grid(True)
+    ax_zoom.legend()
+
+    st.pyplot(fig_zoom)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
