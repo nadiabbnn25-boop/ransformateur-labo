@@ -50,17 +50,31 @@ with onglets[0]:
 
     col_g1, col_g2 = st.columns(2)
 
-    with col_g1:
-        st.subheader("Bilan des Pertes")
+     with col_g1:
+        st.write("#### Bilan des Pertes")
+        
+        # DEBUG : Afficher les valeurs pour voir si elles changent vraiment
+        st.write(f"DEBUG - P0 utilisé : {P0} | Pcc utilisé : {Pcc}")
+        
+        # Nettoyage complet avant de tracer
+        plt.clf() 
         fig1, ax1 = plt.subplots()
-        ax1.plot(beta, Pfer, 'r--', label='Pertes fer')
-        ax1.plot(beta, Pj, 'b-.', label='Pertes Joule')
-        ax1.plot(beta, P_tot, 'k-', linewidth=2, label='Pertes Totales')
-        ax1.axvline(x=beta_opt, color='black', linestyle='--', label=f'β opt = {beta_opt:.3f}')
+        
+        # Recalcul strict local pour être sûr
+        beta_local = np.arange(0, 1.55, 0.05)
+        Pfer_local = np.full_like(beta_local, float(P0))
+        Pj_local = (beta_local**2) * float(Pcc)
+        P_tot_local = Pfer_local + Pj_local
+        
+        # Tracé
+        ax1.plot(beta_local, Pfer_local, 'r--', label='Pertes fer')
+        ax1.plot(beta_local, Pj_local, 'b-.', label='Pertes Joule')
+        ax1.plot(beta_local, P_tot_local, 'k', label='Pertes Totales', linewidth=2)
         ax1.set_xlabel('Taux de charge (β)')
         ax1.set_ylabel('Pertes (W)')
         ax1.legend()
         ax1.grid(True)
+        
         st.pyplot(fig1)
         plt.close(fig1)
 
