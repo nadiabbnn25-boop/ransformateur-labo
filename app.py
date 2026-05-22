@@ -89,3 +89,4 @@ with onglets[1]:
     # (Le code des graphiques Labo continue ici, inchangé)
     st.write("---")
     st.write("L'analyse des données expérimentales confirme les modèles théoriques étudiés.")
+    st.write("L'analyse des données expérimentales confirme les modèles théoriques étudiés.")
