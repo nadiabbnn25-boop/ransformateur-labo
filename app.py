@@ -135,12 +135,7 @@ with col_zoom2:
     fig_zoom.tight_layout()
 
     st.pyplot(fig_zoom)
-    # ... (code précédent de votre graphique de rendement) ...
-    ax2.set(xlabel='β', ylabel='η (%)', title="Rendement (3 facteurs de puissance)")
-    ax2.set_ylim(0, 105)
-    ax2.grid(True); ax2.legend()
-    st.pyplot(fig2)
-
+ 
     # AJOUTEZ CECI JUSTE APRÈS st.pyplot(fig2)
     st.subheader("Analyse de l'optimisation")
     st.write(f"""
