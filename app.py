@@ -28,6 +28,7 @@ with onglets[0]:
     Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
     cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
 
+    # Calculs théoriques
     beta = np.arange(0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0
     P2 = beta * Sn * cos_phi
@@ -53,7 +54,9 @@ with onglets[0]:
     with col_g2:
         st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
+        # Calcul du rendement
         eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        # On trace UNE SEULE courbe qui réagit au curseur
         ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
         ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
         ax2.set_xlabel('Taux de charge (β)')
