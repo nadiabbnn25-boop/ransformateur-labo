@@ -96,6 +96,7 @@ with col_g2:
 # Graphe Zoom Rendement (Optimisé)
 # =========================
 # =========================
+# =========================
 # Graphe Zoom Rendement (Format compact)
 # =========================
 
@@ -118,7 +119,8 @@ with col_droite:
     # Taille réduite : figsize=(6, 3.5)
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
-for c in sorted(list(set([0.7, cos_phi, 1.0]))):
+    # Tout le bloc suivant doit être indenté sous 'with col_droite:'
+    for c in sorted(list(set([0.7, cos_phi, 1.0]))):
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
@@ -127,7 +129,7 @@ for c in sorted(list(set([0.7, cos_phi, 1.0]))):
             # La courbe principale en Bleu foncé (trait gras)
             ax_zoom.plot(beta, eta, color='navy', linewidth=3, label=f'cos(φ)={c:.2f}')
         else:
-            # Les références en Bleu clair ou Ciel
+            # Les références en Bleu clair
             ax_zoom.plot(beta, eta, color='skyblue', linestyle='--', linewidth=1.5, label=f'cos(φ)={c:.2f}')
 
     ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β opt')
