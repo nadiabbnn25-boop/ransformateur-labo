@@ -111,17 +111,15 @@ with col_gauche:
     st.info("💡 Travaillez proche de β_opt pour minimiser les pertes.")
 
 with col_droite:
-    st.write("#### Zoom sur le rendement")
+    st.write("#### Zoom sur le rendement (60-105%)")
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
     for c in sorted(list(set([0.7, cos_phi, 1.0]))):
-        # Calcul du rendement avec condition pour beta=0
-        P2 = beta * Sn * c
-        Ptot = P2 + P0 + (Pcc * beta**2)
-        eta = np.zeros_like(beta) # Initialise à 0
-        mask = Ptot > 0
-        eta[mask] = 100 * P2[mask] / Ptot[mask] # Calcul seulement si puissance > 0
+        P_utile = Sn * beta * c
+        P_pertes = P0 + (Pcc * beta**2)
+        eta = 100 * P_utile / (P_utile + P_pertes + 1e-9)
         
+        # Styles
         if abs(c - cos_phi) < 0.001:
             couleur = 'navy'; epaisseur = 2.0; style = '-'
         elif c == 0.7:
@@ -132,13 +130,12 @@ with col_droite:
         ax_zoom.plot(beta, eta, color=couleur, linestyle=style, linewidth=epaisseur, label=f'cos(φ)={c:.2f}')
 
     ax_zoom.axvline(x=beta_opt, color='k', linestyle='-', linewidth=0.8, label='β opt')
+    
+    # --- C'EST ICI LE CHANGEMENT POUR LE ZOOM ---
+    ax_zoom.set_ylim(60, 105) # Le graphique commence à 60% et finit à 105%
+    
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
-    
-    # FORCE LE ZOOM DE 0 À 105
-    ax_zoom.set_ylim(0, 105) 
-    ax_zoom.set_xlim(0, 1.5) # Force le début de l'axe X à 0
-    
     ax_zoom.grid(True, alpha=0.6)
     ax_zoom.legend(fontsize='x-small')
 
