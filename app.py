@@ -3,30 +3,33 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Configuration de la page avec votre nouveau titre officiel
+# Configuration de la page
 st.set_page_config(page_title="PFE Transformateur", layout="wide")
 st.title("Étude, simulation et optimisation des pertes et du rendement d’un transformateur de puissance : application au cas monophasé")
 
-# Création des deux onglets principaux
+# Création des deux onglets
 onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Expérimental)"])
 
 # ==========================================
-# ONGLET 1 : MODE INDUSTRIEL (Le transfo de puissance)
+# ONGLET 1 : MODE INDUSTRIEL
+# ==========================================
+# ==========================================
+# ONGLET 1 : MODE INDUSTRIEL
 # ==========================================
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
-    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
-    st.write("Entrez les données du rapport d'essai pour visualiser les performances théoriques.")
+    # Voici la ligne modifiée avec le lien direct :
+    st.image("https://www.nomadeducation.fr/api/v1/content/media/1726759", caption="Modèle équivalent du transformateur (Modèle de Kapp)", use_container_width=True)
     
-    # Formulaire avec vos données par défaut
+    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
+   
     col_param1, col_param2, col_param3, col_param4 = st.columns(4)
     Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=100000, step=10000)
     P0 = col_param2.number_input("Pertes Fer P0 (W)", value=500, step=50)
     Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
     cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
 
-    # Moteur de calcul théorique
     beta = np.arange(0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0
 
@@ -38,7 +41,6 @@ with onglets[0]:
 
     st.success(f"Condition du rendement maximal théorique : **β optimal = {beta_opt:.3f}**")
 
-    # Graphiques théoriques
     col_g1, col_g2 = st.columns(2)
     with col_g1:
         st.write("#### Bilan des Pertes")
@@ -69,19 +71,16 @@ with onglets[0]:
         st.pyplot(fig2)
 
 # ==========================================
-# ONGLET 2 : MODE LABORATOIRE (Le transfo didactique)
+# ONGLET 2 : MODE LABORATOIRE
 # ==========================================
 with onglets[1]:
     st.header("Exploitation Expérimentale")
-    st.write("Saisissez vos relevés de mesure pour confronter la pratique au modèle théorique.")
     
     col_lab1, col_lab2, col_lab3 = st.columns(3)
     R1 = col_lab1.number_input("Résistance Primaire R1 (Ω)", value=9.5)
     R2 = col_lab2.number_input("Résistance Secondaire R2 (Ω)", value=2.5)
     P10 = col_lab3.number_input("Pertes Fer à vide P10 (W)", value=8.0)
 
-    # Tableau dynamique
-    st.write("#### Tableau des mesures")
     donnees_initiales = pd.DataFrame({
         "I1 (A)": [0.06, 0.19, 0.24, 0.37, 0.50, 0.64, 0.80, 0.86],
         "P1 (W)": [8.0, 38.0, 49.0, 73.0, 100.0, 119.0, 136.0, 140.0],
@@ -92,7 +91,6 @@ with onglets[1]:
 
     df_mesures = st.data_editor(donnees_initiales, num_rows="dynamic", use_container_width=True)
 
-    # Calculs expérimentaux
     I1 = df_mesures["I1 (A)"].values
     P1 = df_mesures["P1 (W)"].values
     U2 = df_mesures["U2 (V)"].values
@@ -107,7 +105,6 @@ with onglets[1]:
     pertes_joule_calc = (R1 * I1**2) + (R2 * I2**2)
     pertes_estimees = P10 + pertes_joule_calc
 
-    # Graphiques expérimentaux (Affichage en 3 colonnes)
     st.write("#### Analyses Graphiques du Laboratoire")
     col_g3, col_g4, col_g5 = st.columns(3)
     
@@ -121,16 +118,16 @@ with onglets[1]:
         st.pyplot(fig3)
 
     with col_g4:
-        st.write("**Caractéristique en Charge $U_2 = f(I_2)$**")
+        st.write("**Caractéristique U2 = f(I2)**")
         fig5, ax5 = plt.subplots()
-        ax5.plot(I2, U2, '-o', color='#e11d48', markersize=6) # Ligne rouge pour la tension
+        ax5.plot(I2, U2, '-o', color='#e11d48', markersize=6)
         ax5.set_xlabel('Courant secondaire I2 (A)')
         ax5.set_ylabel('Tension secondaire U2 (V)')
         ax5.grid(True, linestyle='--')
         st.pyplot(fig5)
 
     with col_g5:
-        st.write("**Théorie vs Pratique (Pertes)**")
+        st.write("**Théorie vs Pratique**")
         fig4, ax4 = plt.subplots()
         ax4.plot(I2, pertes_totales_exp, '-o', label='Pertes Totales (Mesurées)')
         ax4.plot(I2, pertes_estimees, '--s', label='Pertes Estimées (Calculées)')
@@ -139,3 +136,6 @@ with onglets[1]:
         ax4.legend()
         ax4.grid(True, linestyle='--')
         st.pyplot(fig4)
+        st.divider()
+st.write("---")
+st.write("🔗 Lien de l'application : https://votre-nom-de-projet.streamlit.app")
