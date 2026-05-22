@@ -47,13 +47,21 @@ with onglets[0]:
         ax1.set_ylabel('Pertes (W)')
         ax1.legend(); ax1.grid(True)
         st.pyplot(fig1)
-    with col_g2:
-        st.write("#### Rendement")
+ with col_g2:
+        st.write("#### Rendement (Influence du Facteur de Puissance)")
         fig2, ax2 = plt.subplots()
-        for c in [0.7, 0.8, 0.9, 1.0]:
-            eta_temp = 100 * (beta * Sn * c) / ((beta * Sn * c) + P0 + (beta**2)*Pcc + 1e-9)
-            ax2.plot(beta, eta_temp, label=f'cosφ={c}')
-        ax2.set_xlabel('β'); ax2.set_ylabel('η (%)'); ax2.legend(); ax2.grid(True)
+        
+        # ICI : on utilise la valeur du curseur (cos_phi) choisie par l'utilisateur
+        p2_temp = beta * Sn * cos_phi
+        eta_temp = 100 * p2_temp / (p2_temp + P0 + Pj + 1e-9)
+        
+        ax2.plot(beta, eta_temp, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
+        
+        ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
+        ax2.set_xlabel('Taux de charge (β)')
+        ax2.set_ylabel('Rendement (%)')
+        ax2.legend()
+        ax2.grid(True)
         st.pyplot(fig2)
 
 # ==========================================
