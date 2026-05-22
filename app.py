@@ -111,6 +111,7 @@ with col_gauche:
     st.info("💡 Travaillez proche de β_opt pour minimiser les pertes.")
 
 with col_droite:
+    with col_droite:
     st.write("#### Zoom sur le rendement")
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
@@ -118,28 +119,28 @@ with col_droite:
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
-        # Attribution des couleurs selon la valeur
-        if c == cos_phi:
-            couleur = 'navy'   # Votre curseur en Bleu foncé
-            epaisseur = 3
-            style = '-'
+        # Attribution des couleurs et styles
+        if abs(c - cos_phi) < 0.001: # Comparaison flottante sécurisée
+            couleur = 'navy'
+            epaisseur = 2.0  # Réduit de 3.0 à 2.0 pour plus de finesse
+            style = '-'      # Trait plein
         elif c == 0.7:
-            couleur = 'red'    # 0.7 en Rouge
-            epaisseur = 1.5
-            style = '--'
+            couleur = 'red'
+            epaisseur = 1.2  # Plus fin
+            style = '--'     # Pointillés larges
         else: # c == 1.0
-            couleur = 'green'  # 1.0 en Vert
-            epaisseur = 1.5
-            style = '--'
+            couleur = 'green'
+            epaisseur = 1.2  # Plus fin
+            style = ':'      # Pointillés serrés (pour bien distinguer du rouge)
             
         ax_zoom.plot(beta, eta, color=couleur, linestyle=style, linewidth=epaisseur, label=f'cos(φ)={c:.2f}')
 
-    ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β opt')
+    ax_zoom.axvline(x=beta_opt, color='k', linestyle='-', linewidth=0.8, label='β opt')
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
     ax_zoom.set_ylim(0, 105)
-    ax_zoom.grid(True)
-    ax_zoom.legend(fontsize='small')
+    ax_zoom.grid(True, alpha=0.6) # Grille un peu plus discrète
+    ax_zoom.legend(fontsize='x-small') # Légende plus petite
 
     fig_zoom.tight_layout()
     st.pyplot(fig_zoom)
