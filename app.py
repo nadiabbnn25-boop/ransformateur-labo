@@ -135,6 +135,21 @@ with col_zoom2:
     fig_zoom.tight_layout()
 
     st.pyplot(fig_zoom)
+    # ... (code précédent de votre graphique de rendement) ...
+    ax2.set(xlabel='β', ylabel='η (%)', title="Rendement (3 facteurs de puissance)")
+    ax2.set_ylim(0, 105)
+    ax2.grid(True); ax2.legend()
+    st.pyplot(fig2)
+
+    # AJOUTEZ CECI JUSTE APRÈS st.pyplot(fig2)
+    st.subheader("Analyse de l'optimisation")
+    st.write(f"""
+    Le point de fonctionnement optimal est atteint pour **β = {beta_opt:.3f}**. 
+    À ce point précis, les pertes fer (fixes) sont égales aux pertes Joule (variables). 
+    En faisant varier le cos(φ) avec le curseur, vous observez que :
+    * Un **cos(φ) élevé** déplace la courbe de rendement vers le haut, optimisant ainsi l'utilisation de la puissance apparente.
+    * Le transformateur est **optimisé énergétiquement** lorsqu'il est chargé au voisinage de son β optimal.
+    """)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
