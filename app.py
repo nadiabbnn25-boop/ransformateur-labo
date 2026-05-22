@@ -95,42 +95,46 @@ with col_g2:
  # =========================
 # Graphe Zoom Rendement
 # =========================
-st.write("#### Zoom sur le rendement maximal")
+col_zoom1, col_zoom2 = st.columns(2)
 
-fig_zoom, ax_zoom = plt.subplots()
+with col_zoom2:
 
-for cosv, c in zip(cos_values, couleurs):
+    st.write("#### Zoom sur le rendement maximal")
 
-    P2 = beta * Sn * cosv
-    eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+    fig_zoom, ax_zoom = plt.subplots()
 
-    ax_zoom.plot(
-        beta,
-        eta,
-        linewidth=2,
-        color=c,
-        label=f'cos(φ) = {cosv}'
+    for cosv, c in zip(cos_values, couleurs):
+
+        P2 = beta * Sn * cosv
+        eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+
+        ax_zoom.plot(
+            beta,
+            eta,
+            linewidth=2,
+            color=c,
+            label=f'cos(φ) = {cosv}'
+        )
+
+    ax_zoom.axvline(
+        x=beta_opt,
+        color='k',
+        linestyle='--',
+        label='β optimal'
     )
 
-ax_zoom.axvline(
-    x=beta_opt,
-    color='k',
-    linestyle='--',
-    label='β optimal'
-)
+    ax_zoom.set_xlabel('Taux de charge (β)')
+    ax_zoom.set_ylabel('Rendement (%)')
 
-ax_zoom.set_xlabel('Taux de charge (β)')
-ax_zoom.set_ylabel('Rendement (%)')
+    # Zoom vertical
+    ax_zoom.set_ylim(60, 100)
 
-# Zoom vertical depuis 60 %
-ax_zoom.set_ylim(60, 100)
+    ax_zoom.grid(True)
+    ax_zoom.legend()
 
-ax_zoom.grid(True)
-ax_zoom.legend()
+    fig_zoom.tight_layout()
 
-fig_zoom.tight_layout()
-
-st.pyplot(fig_zoom)
+    st.pyplot(fig_zoom)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
