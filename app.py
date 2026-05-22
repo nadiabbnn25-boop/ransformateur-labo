@@ -18,147 +18,133 @@ st.title(
 onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Expérimental)"])
 
 
-# ══════════════════════════════════════════
-# ONGLET 1 – MODE INDUSTRIEL
-# ══════════════════════════════════════════
+# ==========================================
+# ONGLET 1 : MODE INDUSTRIEL (Version corrigée)
+# ==========================================
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
 
-    # ── Image centrée ───────────────────────────────────────────
-    col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
-    with col_c2:
-        st.image(
-            "https://i.postimg.cc/wxJcNW7K/shema-transfo.png",
-            caption="Principe de fonctionnement",
-            width=500,
-        )
+    # Image
+    col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
+    with col_img2:
+        st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", 
+                 caption="Principe de fonctionnement", width=500)
 
     st.info("**Plaque signalétique :** 100 kVA | 20 kV / 400 V | 50 Hz")
 
-    # ── Paramètres ──────────────────────────────────────────────
+    # ====================== PARAMÈTRES ======================
     col_p1, col_p2, col_p3, col_p4 = st.columns(4)
-    Sn      = col_p1.number_input("Puissance Nominale Sn (VA)", value=100_000, step=10_000)
-    P0      = col_p2.number_input("Pertes Fer P0 (W)",          value=500,     step=50)
-    Pcc     = col_p3.number_input("Pertes Joule Pcc (W)",       value=1_500,   step=100)
-    cos_phi = col_p4.slider("Facteur de puissance (cos φ)",     0.5, 1.0, 0.8)
+    Sn      = col_p1.number_input("Puissance Nominale Sn (VA)", value=100000, step=10000)
+    P0      = col_p2.number_input("Pertes à vide P0 (W)", value=500, step=50)
+    Pcc     = col_p3.number_input("Pertes en court-circuit Pcc (W)", value=1500, step=100)
+    cos_phi = col_p4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8, step=0.05)
 
-    # ── Calculs communs ─────────────────────────────────────────
-    beta     = np.arange(0, 1.55, 0.05)
+    # ====================== CALCULS (placés APRÈS les widgets) ======================
+    beta = np.arange(0.0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0.0
 
-    Pj    = (beta ** 2) * Pcc
-    Pfer  = np.full_like(beta, float(P0))
-    P_tot = Pfer + Pj
-    P2    = beta * Sn * cos_phi
+    # Calculs qui dépendent de cos_phi
+    P_utile = beta * Sn * cos_phi
+    Pj      = beta**2 * Pcc
+    Pfer    = np.full_like(beta, P0)
+    P_tot   = Pfer + Pj
 
-    st.success(f"Rendement maximal théorique : **β optimal = {beta_opt:.3f}**")
+    # Rendement
+    eta = 100 * P_utile / (P_utile + P0 + Pj + 1e-9)
 
-    # ── Styles communs pour les courbes cos(φ) ──────────────────
-    cos_set = sorted({0.7, round(float(cos_phi), 2), 1.0})
+    # Rendement maximal au point optimal
+    P_utile_opt = beta_opt * Sn * cos_phi
+    eta_max = 100 * P_utile_opt / (P_utile_opt + 2 * P0 + 1e-9)
 
-    def style_courbe(c, cos_phi_ref):
-        """Retourne le style matplotlib selon la valeur de cos(φ)."""
-        if abs(c - cos_phi_ref) < 0.001:
-            return dict(color="navy",  linewidth=2.0, linestyle="-")
-        elif c < cos_phi_ref:
-            return dict(color="red",   linewidth=1.2, linestyle="--")
-        else:
-            return dict(color="green", linewidth=1.2, linestyle=":")
+    st.success(f"**β optimal = {beta_opt:.3f}** | **Rendement max = {eta_max:.2f} %** (à cos φ = {cos_phi})")
 
-    # ══════════════════════════════════════════════════════════════
-    # LIGNE 1 : Bilan des pertes  |  Rendement + Zoom
-    # ══════════════════════════════════════════════════════════════
+    # ====================== GRAPHIQUES ======================
     col_g1, col_g2 = st.columns(2)
 
-    # ── Graphique 1 : Bilan des pertes ──────────────────────────
     with col_g1:
-        st.write("#### Bilan des Pertes")
+        st.subheader("Bilan des Pertes")
         fig1, ax1 = plt.subplots(figsize=(6, 4))
-        ax1.plot(beta, Pfer,  "r--", label="Pertes fer")
-        ax1.plot(beta, Pj,    "b-.", label="Pertes Joule")
-        ax1.plot(beta, P_tot, "k",   label="Pertes Totales", linewidth=2)
-        ax1.axvline(x=beta_opt, color="gray", linestyle=":", linewidth=0.9,
-                    label=f"β opt = {beta_opt:.3f}")
-        ax1.set_xlabel("Taux de charge (β)")
-        ax1.set_ylabel("Pertes (W)")
+        ax1.plot(beta, Pfer, 'r--', label='Pertes fer (fixes)')
+        ax1.plot(beta, Pj, 'b-.', label='Pertes Joule (variables)')
+        ax1.plot(beta, P_tot, 'k-', linewidth=2, label='Pertes totales')
+        ax1.axvline(beta_opt, color='gray', linestyle='--', label=f'β optimal = {beta_opt:.3f}')
+        ax1.set_xlabel('Taux de charge β')
+        ax1.set_ylabel('Pertes (W)')
         ax1.legend()
         ax1.grid(True, alpha=0.6)
-        fig1.tight_layout()
         st.pyplot(fig1)
         plt.close(fig1)
 
-    # ── Graphique 2 : Rendement global + zoom ───────────────────
-    st.write(f"Valeur actuelle de cos_phi : {cos_phi}")
-    # ══════════════════════════════════════════════════════════════
-    # LIGNE 2 : Analyse de l'optimisation  |  (espace libre)
-    # ══════════════════════════════════════════════════════════════
-    col_gauche, col_droite = st.columns(2)
+    with col_g2:
+        st.subheader("Courbes de Rendement")
+        fig2, (ax_top, ax_zoom) = plt.subplots(2, 1, figsize=(6, 7), gridspec_kw={'hspace': 0.4})
 
-    # ── Bloc texte : Analyse de l'optimisation ──────────────────
+        cos_values = [0.7, cos_phi, 1.0]
+        colors = ['red', 'navy', 'green']
+        styles = ['--', '-', ':']
+
+        for c, color, sty in zip(cos_values, colors, styles):
+            P_u = beta * Sn * c
+            eta_c = 100 * P_u / (P_u + P0 + (beta**2 * Pcc) + 1e-9)
+            label = f"cos(φ) = {c:.2f}"
+            if abs(c - cos_phi) < 0.01:           # Met en valeur la courbe sélectionnée
+                linewidth = 3.0
+                alpha = 1.0
+            else:
+                linewidth = 1.5
+                alpha = 0.7
+            ax_top.plot(beta, eta_c, color=color, linestyle=sty, linewidth=linewidth, 
+                       alpha=alpha, label=label)
+            ax_zoom.plot(beta, eta_c, color=color, linestyle=sty, linewidth=linewidth, 
+                        alpha=alpha, label=label)
+
+        for ax in [ax_top, ax_zoom]:
+            ax.axvline(beta_opt, color='black', linestyle='--', linewidth=1, label='β optimal')
+            ax.set_xlabel('Taux de charge β')
+            ax.set_ylabel('Rendement (%)')
+            ax.legend()
+            ax.grid(True, alpha=0.6)
+
+        ax_top.set_ylim(0, 105)
+        ax_top.set_title("Rendement - Vue globale")
+        ax_zoom.set_ylim(60, 105)
+        ax_zoom.set_title("Zoom sur la zone utile (60% – 105%)")
+
+        fig2.tight_layout()
+        st.pyplot(fig2)
+        plt.close(fig2)
+
+    # ====================== ANALYSE DE L'OPTIMISATION ======================
+    col_gauche, col_droite = st.columns([1.1, 0.9])
+
     with col_gauche:
         st.subheader("Analyse de l'optimisation")
-
-        eta_opt = (
-            100 * (beta_opt * Sn * cos_phi)
-            / (beta_opt * Sn * cos_phi + 2 * P0 + 1e-9)
-        )
-
         st.write(f"""
         Le point optimal est atteint pour **β = {beta_opt:.3f}**.  
         À ce point :
-        * Les **pertes fer** (fixes) = **pertes Joule** (variables).
-        * Le rendement maximal estimé est **η ≈ {eta_opt:.1f} %** 
-          pour cos(φ) = {cos_phi:.2f}.
-        * Un **cos(φ) élevé** améliore le rendement à charge égale.
-        * Chargez le transformateur près de **β_opt** pour minimiser 
-          les pertes totales.
+        - Les pertes fer = pertes Joule
+        - Le rendement maximal est de **{eta_max:.2f} %** pour cos(φ) = **{cos_phi:.2f}**
+        - Plus le **cos φ est élevé**, meilleur est le rendement
         """)
+        
+        st.info("💡 Conseil : Faire fonctionner le transformateur proche de β = {:.3f} permet de minimiser les pertes.".format(beta_opt))
 
-        st.info(
-            "💡 Le transformateur est optimisé quand il fonctionne "
-            "proche de son point de rendement maximal."
-        )
-
-        # ── Tableau récapitulatif ────────────────────────────────
-        st.write("##### Récapitulatif au point optimal")
-        recap = pd.DataFrame({
-            "Grandeur":  ["β optimal", "Pertes fer (W)", "Pertes Joule (W)",
-                          "Pertes totales (W)", "η max (%)"],
-            "Valeur": [
-                f"{beta_opt:.3f}",
-                f"{P0:.0f}",
-                f"{(beta_opt**2) * Pcc:.0f}",
-                f"{P0 + (beta_opt**2) * Pcc:.0f}",
-                f"{eta_opt:.1f}",
-            ],
-        })
-        st.dataframe(recap, use_container_width=True, hide_index=True)
-
-    # ── Colonne droite : courbe rendement à β_opt ────────────────
     with col_droite:
-        st.subheader("Sensibilité du rendement au cos(φ)")
+        st.subheader("Influence du cos φ sur le rendement maximal")
+        cos_range = np.linspace(0.5, 1.0, 100)
+        eta_vs_cos = []
+        for c in cos_range:
+            pu = beta_opt * Sn * c
+            eta_vs_cos.append(100 * pu / (pu + 2 * P0 + 1e-9))
 
-        cos_range = np.linspace(0.5, 1.0, 200)
-        P_utile_opt = beta_opt * Sn * cos_range
-        eta_vs_cos  = (
-            100 * P_utile_opt
-            / (P_utile_opt + 2 * P0 + 1e-9)
-        )
-
-        fig3, ax3 = plt.subplots(figsize=(6, 4))
-        ax3.plot(cos_range, eta_vs_cos, color="navy", linewidth=2)
-        ax3.axvline(x=cos_phi, color="red", linestyle="--",
-                    linewidth=1.2, label=f"cos(φ) = {cos_phi:.2f}")
-        ax3.scatter([cos_phi],
-                    [100 * (beta_opt * Sn * cos_phi)
-                     / (beta_opt * Sn * cos_phi + 2 * P0 + 1e-9)],
-                    color="red", zorder=5)
-        ax3.set_xlabel("cos(φ)")
+        fig3, ax3 = plt.subplots(figsize=(5, 4))
+        ax3.plot(cos_range, eta_vs_cos, 'navy', linewidth=2.5)
+        ax3.scatter([cos_phi], [eta_max], color='red', s=80, zorder=5)
+        ax3.axvline(cos_phi, color='red', linestyle='--', alpha=0.7)
+        ax3.set_xlabel("cos φ")
         ax3.set_ylabel("Rendement maximal (%)")
-        ax3.set_title(f"Rendement à β = {beta_opt:.3f} selon cos(φ)")
-        ax3.legend()
+        ax3.set_title("Rendement max à β optimal")
         ax3.grid(True, alpha=0.6)
-        fig3.tight_layout()
         st.pyplot(fig3)
         plt.close(fig3)
 
