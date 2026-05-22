@@ -15,9 +15,10 @@ onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Exp
 # ==========================================
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
+    
     col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
     with col_c2:
-        st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement", width=550)
+        st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement", width=500)
     
     st.info("**Plaque signalétique :** 100 kVA | 20 kV / 400 V | 50 Hz")
     
@@ -27,6 +28,7 @@ with onglets[0]:
     Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
     cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
 
+    # Calculs théoriques
     beta = np.arange(0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0
     P2 = beta * Sn * cos_phi
@@ -36,7 +38,7 @@ with onglets[0]:
     
     st.success(f"Rendement maximal théorique : **β optimal = {beta_opt:.3f}**")
 
-    # Calcul des graphiques
+    # Affichage des graphiques
     col_g1, col_g2 = st.columns(2)
     
     with col_g1:
@@ -50,21 +52,16 @@ with onglets[0]:
         ax1.legend()
         ax1.grid(True)
         st.pyplot(fig1)
-
-  with col_g2:
+        
+    with col_g2:
         st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
-        
-        # Calcul sécurisé du rendement : on ajoute une petite valeur (1e-9) pour éviter la division par zéro
-        # Formule : n = P2 / (P2 + P0 + Pj)
-        rendement = 100 * (P2 / (P2 + P0 + Pj + 1e-9))
-        
-        ax2.plot(beta, rendement, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
-        ax2.axvline(x=beta_opt, color='k', linestyle='--', label=f'β opt ({beta_opt:.2f})')
-        
+        eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
+        ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
-        ax2.set_ylim(min(rendement) - 1, 100) # Ajuste l'échelle pour mieux voir la courbe
+        ax2.set_ylim(80, 100)
         ax2.legend()
         ax2.grid(True)
         st.pyplot(fig2)
