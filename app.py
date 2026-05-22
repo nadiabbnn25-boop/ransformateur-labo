@@ -50,8 +50,7 @@ with onglets[0]:
         ax1.legend()
         ax1.grid(True)
         st.pyplot(fig1)
-
-    with col_g2:
+with col_g2:
     st.write("#### Rendement pour différents cos(φ)")
 
     fig2, ax2 = plt.subplots()
@@ -77,7 +76,7 @@ with onglets[0]:
             label=f'cos(φ) = {cosv}'
         )
 
-    # Ligne du β optimal
+    # Ligne β optimal
     ax2.axvline(
         x=beta_opt,
         color='k',
