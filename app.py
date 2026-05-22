@@ -127,7 +127,7 @@ with col_zoom2:
     ax_zoom.set_ylabel('Rendement (%)')
 
     # Zoom vertical
-    ax_zoom.set_ylim(60, 100)
+    ax_zoom.set_ylim(70, 100)
 
     ax_zoom.grid(True)
     ax_zoom.legend()
