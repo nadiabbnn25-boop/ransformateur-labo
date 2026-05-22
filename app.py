@@ -51,15 +51,20 @@ with onglets[0]:
         ax1.grid(True)
         st.pyplot(fig1)
 
-    with col_g2:
+  with col_g2:
         st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
-        eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
-        ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
-        ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
+        
+        # Calcul sécurisé du rendement : on ajoute une petite valeur (1e-9) pour éviter la division par zéro
+        # Formule : n = P2 / (P2 + P0 + Pj)
+        rendement = 100 * (P2 / (P2 + P0 + Pj + 1e-9))
+        
+        ax2.plot(beta, rendement, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
+        ax2.axvline(x=beta_opt, color='k', linestyle='--', label=f'β opt ({beta_opt:.2f})')
+        
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
-        ax2.set_ylim(80, 100)
+        ax2.set_ylim(min(rendement) - 1, 100) # Ajuste l'échelle pour mieux voir la courbe
         ax2.legend()
         ax2.grid(True)
         st.pyplot(fig2)
