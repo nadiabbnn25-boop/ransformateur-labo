@@ -51,17 +51,31 @@ with onglets[0]:
         ax1.grid(True)
         st.pyplot(fig1)
 
-    with col_g2:
-        st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
+  with col_g2:
+        st.write("#### Rendement pour différents cos(φ)")
         fig2, ax2 = plt.subplots()
-        # Calcul du rendement
-        eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
-        # On trace UNE SEULE courbe qui réagit au curseur
-        ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
-        ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
+        
+        # Liste des 3 facteurs de puissance à comparer
+        cos_list = [0.7, 0.85, 1.0]
+        
+        for c in cos_list:
+            # Calcul du rendement pour chaque cos phi
+            P2_c = beta * Sn * c
+            eta_c = 100 * P2_c / (P2_c + P0 + Pj + 1e-9)
+            
+            # Style : ligne épaisse pour le cos phi sélectionné, pointillés pour les autres
+            style = '-' if c == cos_phi else '--'
+            width = 3 if c == cos_phi else 1.5
+            
+            ax2.plot(beta, eta_c, style, linewidth=width, label=f'cos(φ)={c}')
+            
+        ax2.axvline(x=beta_opt, color='k', linestyle=':', label='β optimal')
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
-        ax2.set_ylim(0, 105)
+        
+        # ZOOM : L'échelle s'adapte automatiquement aux valeurs (0 à 105%)
+        ax2.set_ylim(0, 105) 
+        
         ax2.legend()
         ax2.grid(True)
         st.pyplot(fig2)
