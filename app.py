@@ -36,7 +36,9 @@ with onglets[0]:
     
     st.success(f"Rendement maximal théorique : **β optimal = {beta_opt:.3f}**")
 
+    # Calcul des graphiques
     col_g1, col_g2 = st.columns(2)
+    
     with col_g1:
         st.write("#### Bilan des Pertes")
         fig1, ax1 = plt.subplots()
@@ -45,21 +47,19 @@ with onglets[0]:
         ax1.plot(beta, P_tot, 'k', label='Pertes Totales', linewidth=2)
         ax1.set_xlabel('Taux de charge (β)')
         ax1.set_ylabel('Pertes (W)')
-        ax1.legend(); ax1.grid(True)
+        ax1.legend()
+        ax1.grid(True)
         st.pyplot(fig1)
- with col_g2:
-        st.write("#### Rendement (Influence du Facteur de Puissance)")
+
+    with col_g2:
+        st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
-        
-        # ICI : on utilise la valeur du curseur (cos_phi) choisie par l'utilisateur
-        p2_temp = beta * Sn * cos_phi
-        eta_temp = 100 * p2_temp / (p2_temp + P0 + Pj + 1e-9)
-        
-        ax2.plot(beta, eta_temp, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
-        
+        eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
         ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
+        ax2.set_ylim(80, 100)
         ax2.legend()
         ax2.grid(True)
         st.pyplot(fig2)
