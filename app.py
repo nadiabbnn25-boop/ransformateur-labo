@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Configuration de la page
+# Configuration de la page avec votre nouveau titre officiel
 st.set_page_config(page_title="PFE Transformateur", layout="wide")
-st.title("Pertes et Rendement dans les Transformateurs")
+st.title("Étude, simulation et optimisation des pertes et du rendement d’un transformateur de puissance : application au cas monophasé")
 
 # Création des deux onglets principaux
 onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Expérimental)"])
@@ -16,11 +16,10 @@ onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Exp
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
-    # Nouvel encadré pour afficher la plaque signalétique
     st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
     st.write("Entrez les données du rapport d'essai pour visualiser les performances théoriques.")
     
-    # Formulaire avec VOS données par défaut
+    # Formulaire avec vos données par défaut
     col_param1, col_param2, col_param3, col_param4 = st.columns(4)
     Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=100000, step=10000)
     P0 = col_param2.number_input("Pertes Fer P0 (W)", value=500, step=50)
@@ -108,10 +107,12 @@ with onglets[1]:
     pertes_joule_calc = (R1 * I1**2) + (R2 * I2**2)
     pertes_estimees = P10 + pertes_joule_calc
 
-    # Graphiques expérimentaux
-    col_g3, col_g4 = st.columns(2)
+    # Graphiques expérimentaux (Affichage en 3 colonnes)
+    st.write("#### Analyses Graphiques du Laboratoire")
+    col_g3, col_g4, col_g5 = st.columns(3)
+    
     with col_g3:
-        st.write("#### Rendement Expérimental")
+        st.write("**Rendement Expérimental**")
         fig3, ax3 = plt.subplots()
         ax3.plot(I2, eta_exp, '-o', color='#2563eb', markersize=6)
         ax3.set_xlabel('Courant secondaire I2 (A)')
@@ -120,7 +121,16 @@ with onglets[1]:
         st.pyplot(fig3)
 
     with col_g4:
-        st.write("#### Théorie vs Pratique (Pertes)")
+        st.write("**Caractéristique en Charge $U_2 = f(I_2)$**")
+        fig5, ax5 = plt.subplots()
+        ax5.plot(I2, U2, '-o', color='#e11d48', markersize=6) # Ligne rouge pour la tension
+        ax5.set_xlabel('Courant secondaire I2 (A)')
+        ax5.set_ylabel('Tension secondaire U2 (V)')
+        ax5.grid(True, linestyle='--')
+        st.pyplot(fig5)
+
+    with col_g5:
+        st.write("**Théorie vs Pratique (Pertes)**")
         fig4, ax4 = plt.subplots()
         ax4.plot(I2, pertes_totales_exp, '-o', label='Pertes Totales (Mesurées)')
         ax4.plot(I2, pertes_estimees, '--s', label='Pertes Estimées (Calculées)')
