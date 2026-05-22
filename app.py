@@ -20,8 +20,9 @@ with onglets[0]:
     Pcc = c3.number_input("Pcc (W)", value=1500)
     cos_phi = c4.slider("cos φ", 0.5, 1.0, 0.8)
 
-    beta = np.linspace(0.01, 1.5, 50)
-    fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+    beta = np.linspace(0.01, 1.5, 100)
+    
+    fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
     
     # Pertes
     ax1.plot(beta, [P0]*len(beta), 'r--', label='Pertes fer')
@@ -29,12 +30,15 @@ with onglets[0]:
     ax1.plot(beta, P0 + Pcc * beta**2, 'k', label='Totales')
     ax1.set(xlabel='β', ylabel='Pertes (W)', title="Bilan des Pertes"); ax1.legend(); ax1.grid(True)
     
-    # Rendement 3 courbes
+    # Rendement : 3 courbes + Zoom 0-105%
     for c in [0.7, 0.85, 1.0]:
         eta = 100 * (beta * Sn * c) / ((beta * Sn * c) + P0 + (Pcc * beta**2) + 1e-9)
         style = '-' if c == cos_phi else '--'
-        ax2.plot(beta, eta, style, label=f'cosφ={c}')
-    ax2.set(xlabel='β', ylabel='η (%)', title="Rendement"); ax2.set_ylim(0, 105); ax2.legend(); ax2.grid(True)
+        ax2.plot(beta, eta, style, linewidth=2 if c == cos_phi else 1, label=f'cosφ={c}')
+    
+    ax2.set(xlabel='β', ylabel='η (%)', title="Rendement (Zoom 0-105%)")
+    ax2.set_ylim(0, 105) # Force le départ à 0 pour voir toute la courbe
+    ax2.grid(True); ax2.legend()
     st.pyplot(fig1)
 
 # --- MODE LABORATOIRE ---
@@ -47,8 +51,8 @@ with onglets[1]:
     })
     st.dataframe(df)
     
-    fig2, (ax3, ax4, ax5) = plt.subplots(1, 3, figsize=(15, 4))
-    ax3.plot(df["I2 (A)"], (df["P2 (W)"]/df["P1 (W)"])*100, 'o-'); ax3.set(xlabel='I2', ylabel='η (%)', title="Rendement exp."); ax3.grid(True)
+    fig2, (ax3, ax4, ax5) = plt.subplots(1, 3, figsize=(15, 5))
+    ax3.plot(df["I2 (A)"], (df["P2 (W)"]/df["P1 (W)"])*100, 'o-'); ax3.set(xlabel='I2', ylabel='η (%)', title="Rendement exp."); ax3.grid(True); ax3.set_ylim(0, 105)
     ax4.plot(df["I2 (A)"], df["U2 (V)"], 'ro-'); ax4.set(xlabel='I2', ylabel='U2 (V)', title="Caractéristique U2(I2)"); ax4.grid(True)
     ax5.plot(df["I2 (A)"], df["P1 (W)"]-df["P2 (W)"], 'ko-'); ax5.set(xlabel='I2', ylabel='Pertes (W)', title="Pertes totales"); ax5.grid(True)
     st.pyplot(fig2)
