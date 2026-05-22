@@ -56,16 +56,25 @@ with onglets[0]:
     with col_g2:
         st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
+        
+        # Calcul du rendement
         eta_courant = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        
+        # On trace la courbe
         ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
         ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
+        
+        # Suppression de la ligne set_ylim pour laisser Matplotlib auto-ajuster
+        # On ajoute une marge pour que le graphique soit bien lisible
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
-        ax2.set_ylim(80, 100)
+        
+        # Cette ligne permet de forcer le départ de l'axe à 0 pour tout voir
+        ax2.set_ylim(0, 105) 
+        
         ax2.legend()
         ax2.grid(True)
         st.pyplot(fig2)
-
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
