@@ -118,14 +118,17 @@ with col_droite:
     # Taille réduite : figsize=(6, 3.5)
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
-    for c in sorted(list(set([0.7, cos_phi, 1.0]))):
+for c in sorted(list(set([0.7, cos_phi, 1.0]))):
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
-        style = '-' if c == cos_phi else '--'
-        width = 2.5 if c == cos_phi else 1.2
-        
-        ax_zoom.plot(beta, eta, style, linewidth=width, label=f'cos(φ)={c:.2f}')
+        # On définit une nuance de bleu différente pour chaque courbe
+        if c == cos_phi:
+            # La courbe principale en Bleu foncé (trait gras)
+            ax_zoom.plot(beta, eta, color='navy', linewidth=3, label=f'cos(φ)={c:.2f}')
+        else:
+            # Les références en Bleu clair ou Ciel
+            ax_zoom.plot(beta, eta, color='skyblue', linestyle='--', linewidth=1.5, label=f'cos(φ)={c:.2f}')
 
     ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β opt')
     ax_zoom.set_xlabel('Taux de charge (β)')
