@@ -145,6 +145,26 @@ with col_zoom2:
     * Un **cos(φ) élevé** déplace la courbe de rendement vers le haut, optimisant ainsi l'utilisation de la puissance apparente.
     * Le transformateur est **optimisé énergétiquement** lorsqu'il est chargé au voisinage de son β optimal.
     """)
+    with col_gauche:
+        st.subheader("Analyse de l'optimisation")
+        st.write(f"""
+        Le point optimal est atteint pour **β = {beta_opt:.3f}**. 
+        À ce point :
+        * Les pertes fer (fixes) = pertes Joule (variables).
+        * Un **cos(φ) élevé** améliore le rendement.
+        * Chargez le transfo près de β_opt pour minimiser les pertes.
+        """)
+        st.info("💡 Le transformateur est optimisé quand il fonctionne proche de son point de rendement maximal.")
+
+    with col_droite:
+        # Fig 2 : Rendement
+        fig2, ax2 = plt.subplots(figsize=(8, 5))
+        for c in [0.7, cos_phi, 1.0]:
+            eta = 100 * (beta * Sn * c) / ((beta * Sn * c) + P0 + (Pcc * beta**2) + 1e-9)
+            style = '-' if c == cos_phi else '--'
+            ax2.plot(beta, eta, style, linewidth=3 if c == cos_phi else 1.5, label=f'cosφ={c:.2f}')
+        ax2.set(title="Rendement (Zoom 0-105%)"); ax2.set_ylim(0, 105); ax2.grid(True); ax2.legend()
+        st.pyplot(fig2)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
