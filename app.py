@@ -14,12 +14,18 @@ onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Exp
 # ONGLET 1 : MODE INDUSTRIEL
 # ==========================================
 
+# ==========================================
+# ONGLET 1 : MODE INDUSTRIEL
+# ==========================================
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
-    # 1. On affiche l'image d'abord
+    st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement du transformateur monophasé", use_container_width=True)
+    
+    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
+    
+    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
 
-st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement du transformateur monophasé", use_container_width=True)
 
 # 2. On affiche la plaque signalétique juste en dessous
     st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
