@@ -25,7 +25,7 @@ with onglets[0]:
     
     # 3. Ensuite, les autres paramètres
     col_param1, col_param2, col_param3, col_param4 = st.columns(4)
-    # ... (le reste de votre code)
+
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
