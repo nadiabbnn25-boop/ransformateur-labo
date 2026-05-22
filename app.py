@@ -13,43 +13,23 @@ onglets = st.tabs(["⚡ Mode Industriel (Théorie)", "🔬 Mode Laboratoire (Exp
 # ==========================================
 # ONGLET 1 : MODE INDUSTRIEL
 # ==========================================
-
-# ==========================================
-# ONGLET 1 : MODE INDUSTRIEL
-# ==========================================
 with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     
+    # Affichage du schéma
     st.image("https://i.postimg.cc/wxJcNW7K/shema-transfo.png", caption="Principe de fonctionnement du transformateur monophasé", use_container_width=True)
     
     st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
     
-    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
-
-
-# 2. On affiche la plaque signalétique juste en dessous
-    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
-    
-    # 3. Ensuite, les autres paramètres
-    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
-
-with onglets[0]:
-    st.header("Simulation d'un Transformateur de Puissance")
-    
-    # Voici la ligne modifiée avec le lien direct :
-    st.image("https://www.nomadeducation.fr/api/v1/content/media/1726759", caption="Modèle équivalent du transformateur (Modèle de Kapp)", use_container_width=True)
-    
-    st.info("**Plaque signalétique du transformateur étudié :** 100 kVA | 20 kV / 400 V | 50 Hz")
-   
     col_param1, col_param2, col_param3, col_param4 = st.columns(4)
     Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=100000, step=10000)
     P0 = col_param2.number_input("Pertes Fer P0 (W)", value=500, step=50)
     Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
     cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
 
+    # Calculs
     beta = np.arange(0, 1.55, 0.05)
     beta_opt = np.sqrt(P0 / Pcc) if Pcc > 0 else 0
-
     P2 = beta * Sn * cos_phi
     Pj = (beta**2) * Pcc
     Pfer = np.full_like(beta, P0)
@@ -58,34 +38,12 @@ with onglets[0]:
 
     st.success(f"Condition du rendement maximal théorique : **β optimal = {beta_opt:.3f}**")
 
-    col_g1, col_g2 = st.columns(2)
-    with col_g1:
-        st.write("#### Bilan des Pertes")
-        fig1, ax1 = plt.subplots()
-        ax1.plot(beta, Pfer, 'r--', label='Pertes fer')
-        ax1.plot(beta, Pj, 'b-.', label='Pertes Joule')
-        ax1.plot(beta, P_tot, 'k', label='Pertes Totales', linewidth=2)
-        ax1.set_xlabel('Taux de charge (β)')
-        ax1.set_ylabel('Pertes (W)')
-        ax1.legend()
-        ax1.grid(True)
-        st.pyplot(fig1)
-
-    with col_g2:
-        st.write("#### Rendement (Influence du Facteur de Puissance)")
-        fig2, ax2 = plt.subplots()
-        cos_vals = [0.7, 0.8, 0.9, 1.0]
-        colors = ['blue', 'green', 'red', 'black']
-        for c, color in zip(cos_vals, colors):
-            p2_temp = beta * Sn * c
-            eta_temp = 100 * p2_temp / (p2_temp + P0 + Pj + 1e-9)
-            ax2.plot(beta, eta_temp, color=color, label=f'cos(φ) = {c}')
-        ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
-        ax2.set_xlabel('Taux de charge (β)')
-        ax2.set_ylabel('Rendement (%)')
-        ax2.legend()
-        ax2.grid(True)
-        st.pyplot(fig2)
+# ==========================================
+# ONGLET 2 : MODE LABORATOIRE (Suite du code...)
+# ==========================================
+with onglets[1]:
+    st.header("Exploitation Expérimentale")
+    # ... le reste de votre code de laboratoire va ici
 
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
