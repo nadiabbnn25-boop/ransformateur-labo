@@ -115,29 +115,30 @@ with col_droite:
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
     for c in sorted(list(set([0.7, cos_phi, 1.0]))):
+        # Calcul du rendement avec condition pour beta=0
         P2 = beta * Sn * c
-        eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        Ptot = P2 + P0 + (Pcc * beta**2)
+        eta = np.zeros_like(beta) # Initialise à 0
+        mask = Ptot > 0
+        eta[mask] = 100 * P2[mask] / Ptot[mask] # Calcul seulement si puissance > 0
         
-        # Attribution des styles et couleurs
         if abs(c - cos_phi) < 0.001:
-            couleur = 'navy'
-            epaisseur = 2.0
-            style = '-'
+            couleur = 'navy'; epaisseur = 2.0; style = '-'
         elif c == 0.7:
-            couleur = 'red'
-            epaisseur = 1.2
-            style = '--'
+            couleur = 'red'; epaisseur = 1.2; style = '--'
         else:
-            couleur = 'green'
-            epaisseur = 1.2
-            style = ':'
+            couleur = 'green'; epaisseur = 1.2; style = ':'
             
         ax_zoom.plot(beta, eta, color=couleur, linestyle=style, linewidth=epaisseur, label=f'cos(φ)={c:.2f}')
 
     ax_zoom.axvline(x=beta_opt, color='k', linestyle='-', linewidth=0.8, label='β opt')
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
-    ax_zoom.set_ylim(0, 105)
+    
+    # FORCE LE ZOOM DE 0 À 105
+    ax_zoom.set_ylim(0, 105) 
+    ax_zoom.set_xlim(0, 1.5) # Force le début de l'axe X à 0
+    
     ax_zoom.grid(True, alpha=0.6)
     ax_zoom.legend(fontsize='x-small')
 
