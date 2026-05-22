@@ -17,7 +17,12 @@ with onglets[0]:
     st.header("Simulation d'un Transformateur de Puissance")
     st.write("Entrez les données de la plaque signalétique pour visualiser les performances théoriques.")
     
-    # Formulaire sur une ligne
+ Formulaire sur une ligne avec VOS données par défaut
+    col_param1, col_param2, col_param3, col_param4 = st.columns(4)
+    Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=100000, step=10000)
+    P0 = col_param2.number_input("Pertes Fer P0 (W)", value=500, step=50)
+    Pcc = col_param3.number_input("Pertes Joule Pcc (W)", value=1500, step=100)
+    cos_phi = col_param4.slider("Facteur de puissance (cos φ)", 0.5, 1.0, 0.8)
     col_param1, col_param2, col_param3, col_param4 = st.columns(4)
     Sn = col_param1.number_input("Puissance Nominale Sn (VA)", value=630000, step=10000)
     P0 = col_param2.number_input("Pertes Fer P0 (W)", value=1100, step=100)
