@@ -111,7 +111,6 @@ with col_gauche:
     st.info("💡 Travaillez proche de β_opt pour minimiser les pertes.")
 
 with col_droite:
-    with col_droite:
     st.write("#### Zoom sur le rendement")
     fig_zoom, ax_zoom = plt.subplots(figsize=(6, 3.5))
 
@@ -119,19 +118,19 @@ with col_droite:
         P2 = beta * Sn * c
         eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
         
-        # Attribution des couleurs et styles
-        if abs(c - cos_phi) < 0.001: # Comparaison flottante sécurisée
+        # Attribution des styles et couleurs
+        if abs(c - cos_phi) < 0.001:
             couleur = 'navy'
-            epaisseur = 2.0  # Réduit de 3.0 à 2.0 pour plus de finesse
-            style = '-'      # Trait plein
+            epaisseur = 2.0
+            style = '-'
         elif c == 0.7:
             couleur = 'red'
-            epaisseur = 1.2  # Plus fin
-            style = '--'     # Pointillés larges
-        else: # c == 1.0
+            epaisseur = 1.2
+            style = '--'
+        else:
             couleur = 'green'
-            epaisseur = 1.2  # Plus fin
-            style = ':'      # Pointillés serrés (pour bien distinguer du rouge)
+            epaisseur = 1.2
+            style = ':'
             
         ax_zoom.plot(beta, eta, color=couleur, linestyle=style, linewidth=epaisseur, label=f'cos(φ)={c:.2f}')
 
@@ -139,8 +138,8 @@ with col_droite:
     ax_zoom.set_xlabel('Taux de charge (β)')
     ax_zoom.set_ylabel('Rendement (%)')
     ax_zoom.set_ylim(0, 105)
-    ax_zoom.grid(True, alpha=0.6) # Grille un peu plus discrète
-    ax_zoom.legend(fontsize='x-small') # Légende plus petite
+    ax_zoom.grid(True, alpha=0.6)
+    ax_zoom.legend(fontsize='x-small')
 
     fig_zoom.tight_layout()
     st.pyplot(fig_zoom)
