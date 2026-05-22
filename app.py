@@ -53,7 +53,7 @@ with onglets[0]:
         ax1.grid(True)
         st.pyplot(fig1)
         
-    with col_g2:
+   with col_g2:
         st.write(f"#### Rendement pour cos(φ) = {cos_phi}")
         fig2, ax2 = plt.subplots()
         
@@ -64,12 +64,10 @@ with onglets[0]:
         ax2.plot(beta, eta_courant, 'g-', linewidth=2, label=f'cos(φ) = {cos_phi}')
         ax2.axvline(x=beta_opt, color='k', linestyle='--', label='β optimal')
         
-        # Suppression de la ligne set_ylim pour laisser Matplotlib auto-ajuster
-        # On ajoute une marge pour que le graphique soit bien lisible
         ax2.set_xlabel('Taux de charge (β)')
         ax2.set_ylabel('Rendement (%)')
         
-        # Cette ligne permet de forcer le départ de l'axe à 0 pour tout voir
+        # MODIFICATION ICI : On règle l'axe entre 0 et 100 pour tout voir
         ax2.set_ylim(0, 105) 
         
         ax2.legend()
