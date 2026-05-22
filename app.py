@@ -92,79 +92,51 @@ with col_g2:
     ax2.grid(True)
 
     st.pyplot(fig2)
- # =========================
-# Graphe Zoom Rendement
 # =========================
-col_zoom1, col_zoom2 = st.columns(2)
+# Graphe Zoom Rendement (Optimisé)
+# =========================
 
-with col_zoom2:
+# On définit les colonnes : 1/3 pour le texte à gauche, 2/3 pour le graphique à droite
+col_gauche, col_droite = st.columns([1, 2])
 
-    st.write("#### Zoom sur le rendement maximal")
-
-    fig_zoom, ax_zoom = plt.subplots()
-
-    for cosv, c in zip(cos_values, couleurs):
-
-        P2 = beta * Sn * cosv
-        eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
-
-        ax_zoom.plot(
-            beta,
-            eta,
-            linewidth=2,
-            color=c,
-            label=f'cos(φ) = {cosv}'
-        )
-
-    ax_zoom.axvline(
-        x=beta_opt,
-        color='k',
-        linestyle='--',
-        label='β optimal'
-    )
-
-    ax_zoom.set_xlabel('Taux de charge (β)')
-    ax_zoom.set_ylabel('Rendement (%)')
-
-    # Zoom vertical
-    ax_zoom.set_ylim(70, 100)
-
-    ax_zoom.grid(True)
-    ax_zoom.legend()
-
-    fig_zoom.tight_layout()
-
-    st.pyplot(fig_zoom)
- 
-    # AJOUTEZ CECI JUSTE APRÈS st.pyplot(fig2)
+with col_gauche:
     st.subheader("Analyse de l'optimisation")
     st.write(f"""
     Le point de fonctionnement optimal est atteint pour **β = {beta_opt:.3f}**. 
-    À ce point précis, les pertes fer (fixes) sont égales aux pertes Joule (variables). 
-    En faisant varier le cos(φ) avec le curseur, vous observez que :
-    * Un **cos(φ) élevé** déplace la courbe de rendement vers le haut, optimisant ainsi l'utilisation de la puissance apparente.
-    * Le transformateur est **optimisé énergétiquement** lorsqu'il est chargé au voisinage de son β optimal.
+    À ce point précis :
+    * Les pertes fer (fixes) sont égales aux pertes Joule (variables).
+    * Un **cos(φ) élevé** déplace la courbe de rendement vers le haut.
+    * Le transformateur est **optimisé** lorsqu'il fonctionne au voisinage de son β optimal.
     """)
-    with col_gauche:
-        st.subheader("Analyse de l'optimisation")
-        st.write(f"""
-        Le point optimal est atteint pour **β = {beta_opt:.3f}**. 
-        À ce point :
-        * Les pertes fer (fixes) = pertes Joule (variables).
-        * Un **cos(φ) élevé** améliore le rendement.
-        * Chargez le transfo près de β_opt pour minimiser les pertes.
-        """)
-        st.info("💡 Le transformateur est optimisé quand il fonctionne proche de son point de rendement maximal.")
+    st.info("💡 Chargez le transformateur près de β_opt pour minimiser les pertes énergétiques.")
 
-    with col_droite:
-        # Fig 2 : Rendement
-        fig2, ax2 = plt.subplots(figsize=(8, 5))
-        for c in [0.7, cos_phi, 1.0]:
-            eta = 100 * (beta * Sn * c) / ((beta * Sn * c) + P0 + (Pcc * beta**2) + 1e-9)
-            style = '-' if c == cos_phi else '--'
-            ax2.plot(beta, eta, style, linewidth=3 if c == cos_phi else 1.5, label=f'cosφ={c:.2f}')
-        ax2.set(title="Rendement (Zoom 0-105%)"); ax2.set_ylim(0, 105); ax2.grid(True); ax2.legend()
-        st.pyplot(fig2)
+with col_droite:
+    st.write("#### Zoom sur le rendement maximal")
+    fig_zoom, ax_zoom = plt.subplots(figsize=(8, 5))
+
+    # Boucle pour tracer les courbes de rendement
+    # On utilise [0.7, cos_phi, 1.0] pour comparer votre choix avec des références
+    for c in sorted(list(set([0.7, cos_phi, 1.0]))):
+        P2 = beta * Sn * c
+        eta = 100 * P2 / (P2 + P0 + Pj + 1e-9)
+        
+        # Style : trait gras pour le cos(φ) choisi, pointillés pour les autres
+        style = '-' if c == cos_phi else '--'
+        width = 3 if c == cos_phi else 1.5
+        
+        ax_zoom.plot(beta, eta, style, linewidth=width, label=f'cos(φ) = {c:.2f}')
+
+    ax_zoom.axvline(x=beta_opt, color='k', linestyle=':', label='β optimal')
+    ax_zoom.set_xlabel('Taux de charge (β)')
+    ax_zoom.set_ylabel('Rendement (%)')
+    
+    # Zoom global (0 à 105% pour tout voir)
+    ax_zoom.set_ylim(0, 105)
+    
+    ax_zoom.grid(True)
+    ax_zoom.legend()
+
+    st.pyplot(fig_zoom)
 # ==========================================
 # ONGLET 2 : MODE LABORATOIRE
 # ==========================================
