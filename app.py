@@ -23,17 +23,6 @@ st.title("Étude et optimisation des pertes et du rendement d'un transformateur 
 # 3. Le sous-titre (La phrase de votre image)
 st.markdown("<h3 style='text-align: center; color: #555555; font-weight: normal; margin-top: -15px;'>Conception d'une application web de simulation</h3>", unsafe_allow_html=True)
 
-
-
-
-
-
-
-# Titre de l'application
-st.title(
-    "Étude, simulation et optimisation des pertes et du rendement "
-    "d'un transformateur de puissance"
-)
 # Astuce : N'hésitez pas à ajouter "avec développement d'une application web" à la fin de ce titre si vous le souhaitez !
 
 # ─────────────────────────────────────────
