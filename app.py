@@ -34,12 +34,11 @@ with st.expander("ℹ️ À propos de ce projet (Crédits)"):
     
     with col1:
         st.markdown("**🎓 Réalisé par :**")
-        st.markdown("""
-       
+       st.markdown("""
+      
 - M. BELOUCIF      
 - H. M. I. BOUTTA ISSLAM     
 - F. L. SOUAKER
-
         """)
         
     with col2:
