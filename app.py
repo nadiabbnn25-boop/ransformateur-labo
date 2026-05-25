@@ -13,7 +13,8 @@ st.set_page_config(page_title="PFE Transformateur", layout="wide")
 # 3. En-tête et Titre
 # ─────────────────────────────────────────
 # Nom de l'université (sans les crochets pour faire plus officiel)
-st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université Batna 2 - Département d'Électromecanique </p>", unsafe_allow_html=True)
+# 1. Nom de l'université en GRAND, centré, mais avec une épaisseur de texte normale
+st.markdown("<div style='text-align: center; font-size: 26px; color: #2C3E50; margin-bottom: 10px;'>Université Batna 2<br>Département  d'Électromecanique</div>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Titre de l'application
