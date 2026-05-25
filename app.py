@@ -30,15 +30,15 @@ with st.expander("ℹ️ À propos de ce projet (Crédits)"):
     st.write("Ce simulateur a été développé dans le cadre des travaux pratiques de Licence 3 Électrotechnique.")
     
     # Création de deux colonnes pour une belle présentation
+# Création de deux colonnes pour une belle présentation
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("**🎓 Réalisé par :**")
-       st.markdown("""
-      
-- M. BELOUCIF      
-- H. M. I. BOUTTA ISSLAM     
-- F. L. SOUAKER
+        st.markdown("""
+        - M.A.A BACHA
+        - Y. BAASSOU
+        - A. BENAMMAR
         """)
         
     with col2:
