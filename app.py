@@ -17,6 +17,18 @@ st.set_page_config(page_title="PFE Transformateur", layout="wide")
 st.markdown("<div style='text-align: center; font-size: 26px; color: #2C3E50; margin-bottom: 10px;'>Université Batna 2<br>Département  d'Électromecanique</div>", unsafe_allow_html=True)
 st.markdown("---")
 
+# 2. Le grand titre de l'étude
+st.title("Étude et optimisation des pertes et du rendement d'un transformateur monophasé")
+
+# 3. Le sous-titre (La phrase de votre image)
+st.markdown("<h3 style='text-align: center; color: #555555; font-weight: normal; margin-top: -15px;'>Conception d'une application web de simulation</h3>", unsafe_allow_html=True)
+
+
+
+
+
+
+
 # Titre de l'application
 st.title(
     "Étude, simulation et optimisation des pertes et du rendement "
