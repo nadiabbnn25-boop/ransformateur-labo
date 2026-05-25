@@ -1,12 +1,13 @@
-# 1. Les importations
+# 1. Les importations (TOUT EN HAUT DU FICHIER)
 import streamlit as st
-import numpy as np  # si vous l'utilisez
-import matplotlib.pyplot as plt  # si vous l'utilisez
+import numpy as np  
+import matplotlib.pyplot as plt
+import pandas as pd  # <--- LA LIGNE À AJOUTER EST ICI !
 
-# ─────────────────────────────────────────
-# 2. Configuration de la page (OBLIGATOIREMENT EN PREMIER)
-# ─────────────────────────────────────────
+# 2. Configuration de la page
 st.set_page_config(page_title="PFE Transformateur", layout="wide")
+
+# ... (le reste de votre code, Université Batna 2, Crédits, etc.) ...
 
 # ─────────────────────────────────────────
 # 3. En-tête et Titre
