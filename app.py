@@ -1,7 +1,50 @@
+# 1. Les importations
 import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import numpy as np  # si vous l'utilisez
+import matplotlib.pyplot as plt  # si vous l'utilisez
+
+# 2. L'entête institutionnelle (le nom de l'université)
+st.markdown("<p style='text-align: center; color: gray; font-size: 14px;'>Université de BATNA2 - Département d'Électromécanique</p>", unsafe_allow_html=True)
+st.markdown("---")  # Ligne de séparation fine
+
+# 3. Le titre principal de votre TP
+st.title("Étude et optimisation des pertes et du rendement du transformateur monophasé")
+import streamlit as st
+
+# 1. Nom de l'université tout en haut (centré et discret)
+st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université de [BATNA2] - Département d'Électrotechnique</p>", unsafe_allow_html=True)
+st.markdown("---")
+
+# 2. Titre de l'application
+st.title("Étude et optimisation des pertes et du rendement du transformateur monophasé")
+
+# 3. LE MENU DÉROULANT "À PROPOS"
+with st.expander("ℹ️ À propos de ce projet (Crédits)"):
+    st.write("Ce simulateur a été développé dans le cadre des travaux pratiques de Licence 3 Électromécanique ou Électrotechnique .")
+    
+    # Création de deux colonnes à l'intérieur du menu pour une présentation propre
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**🎓 Réalisé par :**")
+        st.markdown("""
+        -  M.A.A BACHA                      
+        -  Y. BAASSOU              
+        - A. BENAMMAR 
+        """)
+        
+    with col2:
+        st.markdown("**👨‍🏫 Encadré par :**")
+        st.markdown("- Dr. [N. Benbouza]")
+        
+    st.markdown("**📅 Année universitaire :** 2025/2026")
+
+# 4. Suite du code de votre application (vos calculs et graphiques)
+# st.subheader("Saisie des données expérimentales")
+# ...
+
+# 4. Le reste de votre code (vos graphiques, calculs de bêta, etc.)
+
 
 # ─────────────────────────────────────────
 # Configuration de la page
