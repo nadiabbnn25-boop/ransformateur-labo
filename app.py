@@ -69,12 +69,7 @@ with onglets[0]:
     st.header("Partie Théorique")
     # ... suite de votre code théorique ...
 
-with onglets[1]:
-    st.header("Partie Expérimentale")
-    # ... suite de votre code expérimental ...
-    st.header("Simulation d'un Transformateur de Puissance")
-
-    # Image centrée
+   # Image centrée
     col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
     with col_c2:
         st.image(
@@ -280,7 +275,10 @@ with onglets[1]:
         st.pyplot(fig3)
         plt.close(fig3)
 
-
+with onglets[1]:
+    st.header("Partie Expérimentale")
+    # ... suite de votre code expérimental ...
+    st.header("Simulation d'un Transformateur de Puissance")
 # ══════════════════════════════════════════
 # ONGLET 2 – MODE LABORATOIRE
 # ══════════════════════════════════════════
