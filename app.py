@@ -3,14 +3,6 @@ import streamlit as st
 import numpy as np  # si vous l'utilisez
 import matplotlib.pyplot as plt  # si vous l'utilisez
 
-# 2. L'entête institutionnelle (le nom de l'université)
-st.markdown("<p style='text-align: center; color: gray; font-size: 14px;'>Université de BATNA2 - Département d'Électromécanique</p>", unsafe_allow_html=True)
-st.markdown("---")  # Ligne de séparation fine
-
-# 3. Le titre principal de votre TP
-st.title("Étude et optimisation des pertes et du rendement du transformateur monophasé")
-import streamlit as st
-
 # 1. Nom de l'université tout en haut (centré et discret)
 st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université de [BATNA2] - Département d'Électrotechnique</p>", unsafe_allow_html=True)
 st.markdown("---")
