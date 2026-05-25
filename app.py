@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt  # si vous l'utilisez
 st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université de [BATNA2] - Département d'Électrotechnique</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# 2. Titre de l'application
-st.title("Étude et optimisation des pertes et du rendement du transformateur monophasé")
-
 # 3. LE MENU DÉROULANT "À PROPOS"
 with st.expander("ℹ️ À propos de ce projet (Crédits)"):
     st.write("Ce simulateur a été développé dans le cadre des travaux pratiques de Licence 3 Électromécanique ou Électrotechnique .")
@@ -34,9 +31,6 @@ with st.expander("ℹ️ À propos de ce projet (Crédits)"):
 # 4. Suite du code de votre application (vos calculs et graphiques)
 # st.subheader("Saisie des données expérimentales")
 # ...
-
-# 4. Le reste de votre code (vos graphiques, calculs de bêta, etc.)
-
 
 # ─────────────────────────────────────────
 # Configuration de la page
