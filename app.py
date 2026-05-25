@@ -56,7 +56,21 @@ with st.expander("ℹ️ À propos de ce projet (Crédits)"):
 # ══════════════════════════════════════════
 # ONGLET 1 – MODE INDUSTRIEL
 # ══════════════════════════════════════════
+# ... (votre menu "À propos" et le titre sont au-dessus) ...
+
+# ─────────────────────────────────────────
+# LA LIGNE MANQUANTE À AJOUTER ICI :
+# ─────────────────────────────────────────
+onglets = st.tabs(["Partie Théorique", "Partie Expérimentale (Laboratoire)"])
+
+# Et ensuite, votre code continue normalement :
 with onglets[0]:
+    st.header("Partie Théorique")
+    # ... suite de votre code théorique ...
+
+with onglets[1]:
+    st.header("Partie Expérimentale")
+    # ... suite de votre code expérimental ...
     st.header("Simulation d'un Transformateur de Puissance")
 
     # Image centrée
