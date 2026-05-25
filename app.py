@@ -3,51 +3,56 @@ import streamlit as st
 import numpy as np  # si vous l'utilisez
 import matplotlib.pyplot as plt  # si vous l'utilisez
 
-# 1. Nom de l'université tout en haut (centré et discret)
-st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université de [BATNA2] - Département d'Électrotechnique</p>", unsafe_allow_html=True)
+# ─────────────────────────────────────────
+# 2. Configuration de la page (OBLIGATOIREMENT EN PREMIER)
+# ─────────────────────────────────────────
+st.set_page_config(page_title="PFE Transformateur", layout="wide")
+
+# ─────────────────────────────────────────
+# 3. En-tête et Titre
+# ─────────────────────────────────────────
+# Nom de l'université (sans les crochets pour faire plus officiel)
+st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Université Batna 2 - Département d'Électrotechnique</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# 3. LE MENU DÉROULANT "À PROPOS"
+# Titre de l'application
+st.title(
+    "Étude, simulation et optimisation des pertes et du rendement "
+    "d'un transformateur de puissance"
+)
+# Astuce : N'hésitez pas à ajouter "avec développement d'une application web" à la fin de ce titre si vous le souhaitez !
+
+# ─────────────────────────────────────────
+# 4. Menu déroulant "À propos"
+# ─────────────────────────────────────────
 with st.expander("ℹ️ À propos de ce projet (Crédits)"):
-    st.write("Ce simulateur a été développé dans le cadre des travaux pratiques de Licence 3 Électromécanique ou Électrotechnique .")
+    # J'ai gardé uniquement "Électrotechnique" pour être en accord avec votre département, mais vous pouvez remettre "Électromécanique" si besoin.
+    st.write("Ce simulateur a été développé dans le cadre des travaux pratiques de Licence 3 Électrotechnique.")
     
-    # Création de deux colonnes à l'intérieur du menu pour une présentation propre
+    # Création de deux colonnes pour une belle présentation
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("**🎓 Réalisé par :**")
         st.markdown("""
-        -  M.A.A BACHA                      
-        -  Y. BAASSOU              
-        - A. BENAMMAR 
+       
+- M. BELOUCIF      
+- H. M. I. BOUTTA ISSLAM     
+- F. L. SOUAKER
+
         """)
         
     with col2:
         st.markdown("**👨‍🏫 Encadré par :**")
-        st.markdown("- Dr. [N. Benbouza]")
+        st.markdown("- Dr. N. Benbouza")
         
     st.markdown("**📅 Année universitaire :** 2025/2026")
 
-# 4. Suite du code de votre application (vos calculs et graphiques)
+# ─────────────────────────────────────────
+# 5. Suite du code de votre application 
+# ─────────────────────────────────────────
 # st.subheader("Saisie des données expérimentales")
 # ...
-
-# ─────────────────────────────────────────
-# Configuration de la page
-# ─────────────────────────────────────────
-st.set_page_config(page_title="PFE Transformateur", layout="wide")
-st.title(
-    "Étude, simulation et optimisation des pertes et du rendement "
-    "d'un transformateur de puissance"
-)
-
-# ─────────────────────────────────────────
-# Onglets principaux
-# ─────────────────────────────────────────
-onglets = st.tabs([
-    "⚡ Mode Industriel (Théorie)",
-    "🔬 Mode Laboratoire (Expérimental)"
-])
 
 # ══════════════════════════════════════════
 # ONGLET 1 – MODE INDUSTRIEL
