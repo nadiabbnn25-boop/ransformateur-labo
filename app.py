@@ -278,7 +278,7 @@ with onglets[0]:
 with onglets[1]:
     st.header("Partie Expérimentale")
     # ... suite de votre code expérimental ...
-    st.header("Simulation d'un Transformateur de Puissance")
+    st.header("Simulation d'un Transformateur de Laboratoire avec résultats expérimentaux ")
 # ══════════════════════════════════════════
 # ONGLET 2 – MODE LABORATOIRE
 # ══════════════════════════════════════════
